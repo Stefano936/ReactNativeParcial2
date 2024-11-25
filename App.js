@@ -10,10 +10,12 @@ const Stack = createStackNavigator();
 function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <Text style={styles.title}>Bienvenido a Destinos</Text>
+      <Text style={styles.subtitle}>Toca el botón para ver los destinos disponibles</Text>
       <Button
-        title="Go to Destinations"
+        title="Ir a destinos"
         onPress={() => navigation.navigate('Destinations')}
+        color="#007BFF"
       />
       <StatusBar style="auto" />
     </View>
@@ -35,8 +37,30 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f0f8ff',
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 20,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#007BFF',
+    marginBottom: 20,
+  },
+  subtitle: {
+    fontSize: 18,
+    color: '#333',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  button: {
+    backgroundColor: '#007BFF',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
   },
 });

@@ -27,3 +27,11 @@ export const editDestination = async (id, destination) => {
     console.error('Error editing destination:', error);
   }
 };
+
+export const deleteDestination = async (id) => {
+  try {
+    await axios.delete(`http://10.13.168.8:8000/destinations/${id}`);
+    } catch (error) {
+    console.error('Error deleting destination:', error);
+    }
+};

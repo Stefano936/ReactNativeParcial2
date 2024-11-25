@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Button } from 'react-native';
-import { getDestinations } from '../components/api';
+import { getDestinations, deleteDestination } from '../components/api';
 
 const Destinations = ({ navigation }) => {
   const [destinations, setDestinations] = useState([]);
@@ -15,13 +15,23 @@ const Destinations = ({ navigation }) => {
     fetchData();
   }, []);
 
+  const handleDelete = async (id) => {
+    await deleteDestination(id);
+    setDestinations(destinations.filter(destination => destination.id !== id));
+  };
+
   const renderItem = ({ item }) => (
     <View style={styles.item}>
       <Text style={styles.name}>{item.name}</Text>
       <Text style={[styles.tag, styles[item.difficulty.toLowerCase()]]}>{item.difficulty}</Text>
       <Button
-        title="Edit"
+        title="Editar"
         onPress={() => navigation.navigate('AddEditDestination', { destination: item })}
+      />
+      <View style={styles.buttonSpacer} />
+      <Button
+        title="Borrar"
+        onPress={() => handleDelete(item.id)}
       />
     </View>
   );
@@ -29,7 +39,7 @@ const Destinations = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Button
-        title="Add Destination"
+        title="Agregar Destinos"
         onPress={() => navigation.navigate('AddEditDestination')}
       />
       <FlatList
@@ -60,6 +70,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
     marginTop: 5,
+    marginBottom: 10,
   },
   fácil: {
     backgroundColor: 'green',
@@ -70,6 +81,9 @@ const styles = StyleSheet.create({
   difícil: {
     backgroundColor: 'purple',
   },
+    buttonSpacer: {
+        margin: 5,
+    },
 });
 
 export default Destinations;
