@@ -4,12 +4,12 @@ import { getDestinations, deleteDestination, toggleFavorite } from '../component
 
 const Destinations = ({ navigation }) => {
   const [destinations, setDestinations] = useState([]);
+  const [sortByFavorites, setSortByFavorites] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await getDestinations();
-      const sortedDestinations = data.sort((a, b) => b.favorites - a.favorites);
-      setDestinations(sortedDestinations);
+      setDestinations(data);
     };
 
     fetchData();
@@ -26,6 +26,12 @@ const Destinations = ({ navigation }) => {
       destination.id === id ? { ...destination, favorites: isFavorite } : destination
     );
     setDestinations(updatedDestinations);
+  };
+
+  const handleSortByFavorites = () => {
+    setSortByFavorites(!sortByFavorites);
+    const sortedDestinations = [...destinations].sort((a, b) => b.favorites - a.favorites);
+    setDestinations(sortedDestinations);
   };
 
   const renderItem = ({ item }) => (
@@ -54,6 +60,12 @@ const Destinations = ({ navigation }) => {
           onPress={() => navigation.navigate('AddEditDestination')}
           color={Platform.OS === 'ios' ? 'green' : 'blue'}
         />
+        <View style={styles.buttonSpacer} />
+        <Button
+          title="Ordenar por Favoritos"
+          onPress={handleSortByFavorites}
+          color="green"
+        />
       </View>
       <FlatList
         data={destinations}
@@ -75,6 +87,11 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     marginBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  buttonSpacer: {
+    width: 10,
   },
   list: {
     width: '85%',

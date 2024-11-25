@@ -46,7 +46,8 @@
       "name": "Islas Galápagos 🐢🌴",
       "description": "Un archipiélago volcánico famoso por su biodiversidad única.",
       "difficulty": "Moderada",
-      "id": "7"
+      "id": "7",
+      "favorites": false
     },
     {
       "id": "8",
