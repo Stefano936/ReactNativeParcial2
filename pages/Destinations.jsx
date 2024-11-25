@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Button } from 'react-native';
-import { getDestinations, deleteDestination } from '../components/api';
+import { getDestinations, deleteDestination, toggleFavorite } from '../components/api';
 
 const Destinations = ({ navigation }) => {
   const [destinations, setDestinations] = useState([]);
@@ -20,6 +20,14 @@ const Destinations = ({ navigation }) => {
     setDestinations(destinations.filter(destination => destination.id !== id));
   };
 
+  const handleToggleFavorite = async (id, isFavorite) => {
+    await toggleFavorite(id, isFavorite);
+    const updatedDestinations = destinations.map(destination => 
+      destination.id === id ? { ...destination, favorites: isFavorite } : destination
+    );
+    setDestinations(updatedDestinations);
+  };
+
   const renderItem = ({ item }) => (
     <View style={styles.item}>
       <Text style={styles.name}>{item.name}</Text>
@@ -32,6 +40,11 @@ const Destinations = ({ navigation }) => {
       <Button
         title="Borrar"
         onPress={() => handleDelete(item.id)}
+      />
+      <View style={styles.buttonSpacer} />
+      <Button
+        title={item.favorites ? "Desmarcar Favorito" : "Marcar Favorito"}
+        onPress={() => handleToggleFavorite(item.id, !item.favorites)}
       />
     </View>
   );
@@ -81,9 +94,9 @@ const styles = StyleSheet.create({
   difícil: {
     backgroundColor: 'purple',
   },
-    buttonSpacer: {
-        margin: 5,
-    },
+  buttonSpacer: {
+    margin: 5,
+  },
 });
 
 export default Destinations;

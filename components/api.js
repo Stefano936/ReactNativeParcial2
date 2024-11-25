@@ -35,3 +35,12 @@ export const deleteDestination = async (id) => {
     console.error('Error deleting destination:', error);
     }
 };
+
+export const toggleFavorite = async (id, isFavorite) => {
+    try {
+      const response = await axios.patch(`http://10.13.168.8:8000/destinations/${id}`, { favorites: isFavorite });
+      return response.data;
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+    }
+  };
