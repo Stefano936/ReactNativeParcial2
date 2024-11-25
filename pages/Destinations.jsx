@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Button } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Button, Platform, TouchableOpacity } from 'react-native';
 import { getDestinations, deleteDestination, toggleFavorite } from '../components/api';
 
 const Destinations = ({ navigation }) => {
@@ -32,33 +32,34 @@ const Destinations = ({ navigation }) => {
     <View style={styles.item}>
       <Text style={styles.name}>{item.name}</Text>
       <Text style={[styles.tag, styles[item.difficulty.toLowerCase()]]}>{item.difficulty}</Text>
-      <Button
-        title="Editar"
-        onPress={() => navigation.navigate('AddEditDestination', { destination: item })}
-      />
+      <TouchableOpacity style={styles.commonButton} onPress={() => navigation.navigate('AddEditDestination', { destination: item })}>
+        <Text style={styles.commonButtonText}>Editar</Text>
+      </TouchableOpacity>
       <View style={styles.buttonSpacer} />
-      <Button
-        title="Borrar"
-        onPress={() => handleDelete(item.id)}
-      />
+      <TouchableOpacity style={styles.commonButton} onPress={() => handleDelete(item.id)}>
+        <Text style={styles.commonButtonText}>Borrar</Text>
+      </TouchableOpacity>
       <View style={styles.buttonSpacer} />
-      <Button
-        title={item.favorites ? "Desmarcar Favorito" : "Marcar Favorito"}
-        onPress={() => handleToggleFavorite(item.id, !item.favorites)}
-      />
+      <TouchableOpacity style={styles.commonButton} onPress={() => handleToggleFavorite(item.id, !item.favorites)}>
+        <Text style={styles.commonButtonText}>{item.favorites ? "Desmarcar Favorito" : "Marcar Favorito"}</Text>
+      </TouchableOpacity>
     </View>
   );
 
   return (
     <View style={styles.container}>
-      <Button
-        title="Agregar Destinos"
-        onPress={() => navigation.navigate('AddEditDestination')}
-      />
+      <View style={styles.buttonContainer}>
+        <Button
+          title={Platform.OS === 'ios' ? "Crear Destino" : "Agregar Destino"}
+          onPress={() => navigation.navigate('AddEditDestination')}
+          color={Platform.OS === 'ios' ? 'green' : 'blue'}
+        />
+      </View>
       <FlatList
         data={destinations}
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
+        contentContainerStyle={styles.list}
       />
     </View>
   );
@@ -68,6 +69,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
+    alignItems: 'center',
+  },
+  buttonContainer: {
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  list: {
+    width: '85%',
+    alignSelf: 'center',
   },
   item: {
     padding: 10,
@@ -92,10 +103,20 @@ const styles = StyleSheet.create({
     backgroundColor: 'yellow',
   },
   difícil: {
-    backgroundColor: 'purple',
+    backgroundColor: 'red',
   },
   buttonSpacer: {
     margin: 5,
+  },
+  commonButton: {
+    backgroundColor: '#007BFF',
+    padding: 10,
+    borderRadius: 5,
+  },
+  commonButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
 
