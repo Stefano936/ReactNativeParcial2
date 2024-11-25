@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Destinations from './pages/Destinations';
+import AddEditDestination from './pages/AddEditDestination';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,7 @@ export default function App() {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Destinations" component={Destinations} />
+        <Stack.Screen name="AddEditDestination" component={AddEditDestination} />
       </Stack.Navigator>
     </NavigationContainer>
   );
